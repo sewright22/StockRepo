@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="StockDB" Class="StockDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=STEVE-PC\SQLEXPRESS;Initial Catalog=StockDB;Integrated Security=True" SettingsObjectName="StockDbWriter.Properties.Settings" SettingsPropertyName="StockDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ErrorLog" Member="ErrorLogs">
+    <Type Name="ErrorLog">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Message" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Markets" Member="Markets">
+    <Type Name="Market">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StockPrices" Member="StockPrices">
+    <Type Name="StockPrice">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Open]" Member="Open" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Low" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="High" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="[Close]" Member="Close" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Stocks" Member="Stocks">
+    <Type Name="Stock">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MarketID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Symbol" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Transactions" Member="Transactions">
+    <Type Name="Transaction">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Action" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TransactionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Function Name="dbo.AddStockTransaction" Method="AddStockTransaction">
+    <Parameter Name="stockID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="action" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.BuyStock" Method="BuyStock">
+    <Parameter Name="stockID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SellStock" Method="SellStock">
+    <Parameter Name="stockID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

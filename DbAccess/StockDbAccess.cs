@@ -25,10 +25,32 @@ namespace DbAccess
             return value;
         }
 
+        public void StartRun(string runInfo)
+        {
+            _stockDb.StockSimulationRuns.InsertOnSubmit(new StockSimulationRun() { RunTime = DateTime.Now, RunInfo = runInfo });
+            _stockDb.SubmitChanges();
+        }
+
+        public IEnumerable<StockPrice> GetStockPrices(int stockID)
+        {
+            var results = (from p in _stockDb.StockPrices
+                          where p.StockID == stockID
+                          select p).OrderBy(p => p.Date);
+
+            return results;
+        }
+
         public Market GetMarket(string marketName)
         {
             return (from m in _stockDb.Markets
                     where m.Name.ToUpper() == marketName.ToUpper()
+                    select m).FirstOrDefault();
+        }
+
+        public Market GetMarket(int marketID)
+        {
+            return (from m in _stockDb.Markets
+                    where m.ID == marketID
                     select m).FirstOrDefault();
         }
 
@@ -44,6 +66,51 @@ namespace DbAccess
             var market = new Market() { Name = marketName };
             _stockDb.Markets.InsertOnSubmit(market);
             _stockDb.SubmitChanges();
+        }
+
+        public void AddStock(Stock stock)
+        {
+            _stockDb.Stocks.InsertOnSubmit(stock);
+            _stockDb.SubmitChanges();
+        }
+
+        public bool StockExists(Stock stock)
+        {
+            bool retVal = false;
+            var results = from s in _stockDb.Stocks
+                          where s.Symbol == stock.Symbol
+                          select s;
+
+            if(results.ToList().Count == 0)
+            {
+                retVal = false;
+            }
+            else
+            {
+                retVal = true;
+            }
+
+            return retVal;
+        }
+
+        public bool StockPriceExists(StockPrice stockPrice)
+        {
+            bool retVal = false;
+            var results = from s in _stockDb.StockPrices
+                          where s.Date.Date == stockPrice.Date.Date
+                          where s.StockID == stockPrice.StockID
+                          select s;
+
+            if (results.ToList().Count == 0)
+            {
+                retVal = false;
+            }
+            else
+            {
+                retVal = true;
+            }
+
+            return retVal;
         }
 
         public void AddStock(int marketID, string symbol)
@@ -68,6 +135,23 @@ namespace DbAccess
             _stockDb.SubmitChanges();
         }
 
+        public void AddCompletedTransaction (CompletedTransaction transaction)
+        {
+            //SELECT TOP 1 @runID = ID FROM StockSimulationRun ORDER By ID desc
+
+            var result = ((from sim in _stockDb.StockSimulationRuns
+                           select sim).OrderByDescending(t => t.ID)).FirstOrDefault();
+            transaction.RunID = result.ID;
+            _stockDb.CompletedTransactions.InsertOnSubmit(transaction);
+            _stockDb.SubmitChanges();
+        }
+
+        public void AddStockPrice(StockPrice stockPrice)
+        {
+            _stockDb.StockPrices.InsertOnSubmit(stockPrice);
+            _stockDb.SubmitChanges();
+        }
+
         public void AddStockPrice(string stockName, decimal open, decimal low, decimal high, decimal close, int volume, DateTime date)
         {
             AddStockPrice(GetStock(stockName).ID, open, low, high, close, volume, date);
@@ -80,14 +164,14 @@ namespace DbAccess
             _stockDb.SubmitChanges();
         }
 
-        public void BuyStock(int stockID, decimal price)
+        public void BuyStock(int stockID, decimal price, DateTime date)
         {
-            _stockDb.BuyStock((int)stockID, (decimal)price);
+            _stockDb.BuyStock((int)stockID, (decimal)price, date);
         }
 
-        public void SellStock(int stockID, decimal price)
+        public void SellStock(int stockID, decimal price, DateTime date)
         {
-            _stockDb.SellStock((int)stockID, (decimal)price);
+            _stockDb.SellStock((int)stockID, (decimal)price, date);
         }
     }
 }

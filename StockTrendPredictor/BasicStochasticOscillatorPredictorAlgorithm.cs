@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StockTrendPredictor
 {
-    public class BasicStochasticOscillatorPredictorAlgorithm : IPredictorAlgorithm
+    public class BasicStochasticOscillatorPredictorAlgorithm : ISimulation
     {
         private int _dVal;
         private int _kVal;

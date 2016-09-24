@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicStochasticOscillatorPredictorAlgorithmUsingCriteria.cs" />
+    <Compile Include="BasicThresholdBuySellCriteria.cs" />
     <Compile Include="CompleteTransaction.cs" />
-    <Compile Include="IPredictorAlgorithm.cs" />
+    <Compile Include="IBuySellCriteria.cs" />
+    <Compile Include="ISimulation.cs" />
     <Compile Include="KPercentPoint.cs" />
     <Compile Include="BasicStochasticOscillatorPredictorAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -43,6 +43,14 @@ namespace StockTrendPredictor
             }
         }
 
+        public StockPrice LatestPrice
+        {
+            get
+            {
+                return _lst_pricePoints[0];
+            }
+        }
+
         public void AddPricePoint(StockPrice point)
         {
             _lst_pricePoints.Insert(0, point);

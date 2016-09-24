@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace StockTrendPredictor
 {
-    public interface IPredictorAlgorithm
+    public interface IBuySellCriteria
     {
-        void Run();
+        void Buy();
+        void Sell();
+        void LogOpenTransaction();
     }
 }

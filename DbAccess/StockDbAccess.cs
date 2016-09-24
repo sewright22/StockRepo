@@ -25,10 +25,17 @@ namespace DbAccess
             return value;
         }
 
-        public void StartRun(string runInfo)
+        public int StartRun(string runInfo)
         {
             _stockDb.StockSimulationRuns.InsertOnSubmit(new StockSimulationRun() { RunTime = DateTime.Now, RunInfo = runInfo });
             _stockDb.SubmitChanges();
+            return GetLatestRunId();
+        }
+
+        public int GetLatestRunId()
+        {
+            return (from r in _stockDb.StockSimulationRuns
+                          select r).OrderByDescending(t => t.ID).FirstOrDefault().ID;
         }
 
         public IEnumerable<StockPrice> GetStockPrices(int stockID)
@@ -137,11 +144,6 @@ namespace DbAccess
 
         public void AddCompletedTransaction (CompletedTransaction transaction)
         {
-            //SELECT TOP 1 @runID = ID FROM StockSimulationRun ORDER By ID desc
-
-            var result = ((from sim in _stockDb.StockSimulationRuns
-                           select sim).OrderByDescending(t => t.ID)).FirstOrDefault();
-            transaction.RunID = result.ID;
             _stockDb.CompletedTransactions.InsertOnSubmit(transaction);
             _stockDb.SubmitChanges();
         }

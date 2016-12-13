@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StockTrendPredictor
 {
-    public class BasicThresholdBuySellCriteria : IBuySellCriteria
+    public class BasicThresholdBuySellFlipCriteria : IBuySellCriteria
     {
         private bool bought;
         private int _lowerThreshold;
@@ -16,8 +16,7 @@ namespace StockTrendPredictor
         private StockDbAccess _repo;
         private int _runId;
 
-
-        public BasicThresholdBuySellCriteria(int runID, int low, StochasticOscillator osc)
+        public BasicThresholdBuySellFlipCriteria(int runID, int low, StochasticOscillator osc)
         {
             _repo = new StockDbAccess();
             _lowerThreshold = low;
@@ -34,7 +33,7 @@ namespace StockTrendPredictor
                 {
                     if (_stochasticOscillator.KPercent < _lowerThreshold &&
                        _stochasticOscillator.DPercent < _lowerThreshold &&
-                       _stochasticOscillator.DPercent >= _stochasticOscillator.KPercent)
+                       _stochasticOscillator.KPercent >= _stochasticOscillator.DPercent)
                     {
                         bought = true;
                         _tradeTransaction = new TradeTransaction()
@@ -54,7 +53,7 @@ namespace StockTrendPredictor
             {
                 var price = _stochasticOscillator.LatestPrice;
 
-                if (((price.High - _tradeTransaction.BuyStockPrice.ClosePrice) / _tradeTransaction.BuyStockPrice.ClosePrice) > Convert.ToDecimal(0.05))
+                if (((price.ClosePrice - _tradeTransaction.BuyStockPrice.ClosePrice) / _tradeTransaction.BuyStockPrice.ClosePrice) > Convert.ToDecimal(0.1))
                 {
                     bought = false;
                     _tradeTransaction.SellStockPrice = price;

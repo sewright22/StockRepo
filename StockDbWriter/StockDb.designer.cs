@@ -33,15 +33,15 @@ namespace StockDbWriter
     partial void InsertStock(Stock instance);
     partial void UpdateStock(Stock instance);
     partial void DeleteStock(Stock instance);
-    partial void InsertStockPrice(StockPrice instance);
-    partial void UpdateStockPrice(StockPrice instance);
-    partial void DeleteStockPrice(StockPrice instance);
     partial void InsertStockSimulationRun(StockSimulationRun instance);
     partial void UpdateStockSimulationRun(StockSimulationRun instance);
     partial void DeleteStockSimulationRun(StockSimulationRun instance);
     partial void InsertCompletedTransaction(CompletedTransaction instance);
     partial void UpdateCompletedTransaction(CompletedTransaction instance);
     partial void DeleteCompletedTransaction(CompletedTransaction instance);
+    partial void InsertStockPrice(StockPrice instance);
+    partial void UpdateStockPrice(StockPrice instance);
+    partial void DeleteStockPrice(StockPrice instance);
     #endregion
 		
 		public StockDbDataContext() : 
@@ -106,14 +106,6 @@ namespace StockDbWriter
 			}
 		}
 		
-		public System.Data.Linq.Table<StockPrice> StockPrices
-		{
-			get
-			{
-				return this.GetTable<StockPrice>();
-			}
-		}
-		
 		public System.Data.Linq.Table<StockSimulationRun> StockSimulationRuns
 		{
 			get
@@ -127,6 +119,14 @@ namespace StockDbWriter
 			get
 			{
 				return this.GetTable<CompletedTransaction>();
+			}
+		}
+		
+		public System.Data.Linq.Table<StockPrice> StockPrices
+		{
+			get
+			{
+				return this.GetTable<StockPrice>();
 			}
 		}
 		
@@ -148,6 +148,13 @@ namespace StockDbWriter
 		public int SellStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> stockID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,0)")] System.Nullable<decimal> price, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="DateTime")] System.Nullable<System.DateTime> date)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), stockID, price, date);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockPrice")]
+		public int InsertStockPrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string stockSymbol, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(12,2)")] System.Nullable<decimal> openPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(12,2)")] System.Nullable<decimal> lowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(12,2)")] System.Nullable<decimal> highPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(12,2)")] System.Nullable<decimal> closePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> volume, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="DateTime")] System.Nullable<System.DateTime> date)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), stockSymbol, openPrice, lowPrice, highPrice, closePrice, volume, date);
 			return ((int)(result.ReturnValue));
 		}
 	}
@@ -607,236 +614,6 @@ namespace StockDbWriter
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StockPrices")]
-	public partial class StockPrice : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private int _StockID;
-		
-		private decimal _Open;
-		
-		private decimal _Low;
-		
-		private decimal _High;
-		
-		private decimal _Close;
-		
-		private int _Volume;
-		
-		private System.DateTime _Date;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnStockIDChanging(int value);
-    partial void OnStockIDChanged();
-    partial void OnOpenChanging(decimal value);
-    partial void OnOpenChanged();
-    partial void OnLowChanging(decimal value);
-    partial void OnLowChanged();
-    partial void OnHighChanging(decimal value);
-    partial void OnHighChanged();
-    partial void OnCloseChanging(decimal value);
-    partial void OnCloseChanged();
-    partial void OnVolumeChanging(int value);
-    partial void OnVolumeChanged();
-    partial void OnDateChanging(System.DateTime value);
-    partial void OnDateChanged();
-    #endregion
-		
-		public StockPrice()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockID", DbType="Int NOT NULL")]
-		public int StockID
-		{
-			get
-			{
-				return this._StockID;
-			}
-			set
-			{
-				if ((this._StockID != value))
-				{
-					this.OnStockIDChanging(value);
-					this.SendPropertyChanging();
-					this._StockID = value;
-					this.SendPropertyChanged("StockID");
-					this.OnStockIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Open]", Storage="_Open", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Open
-		{
-			get
-			{
-				return this._Open;
-			}
-			set
-			{
-				if ((this._Open != value))
-				{
-					this.OnOpenChanging(value);
-					this.SendPropertyChanging();
-					this._Open = value;
-					this.SendPropertyChanged("Open");
-					this.OnOpenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Low", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Low
-		{
-			get
-			{
-				return this._Low;
-			}
-			set
-			{
-				if ((this._Low != value))
-				{
-					this.OnLowChanging(value);
-					this.SendPropertyChanging();
-					this._Low = value;
-					this.SendPropertyChanged("Low");
-					this.OnLowChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_High", DbType="Decimal(18,0) NOT NULL")]
-		public decimal High
-		{
-			get
-			{
-				return this._High;
-			}
-			set
-			{
-				if ((this._High != value))
-				{
-					this.OnHighChanging(value);
-					this.SendPropertyChanging();
-					this._High = value;
-					this.SendPropertyChanged("High");
-					this.OnHighChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Close]", Storage="_Close", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Close
-		{
-			get
-			{
-				return this._Close;
-			}
-			set
-			{
-				if ((this._Close != value))
-				{
-					this.OnCloseChanging(value);
-					this.SendPropertyChanging();
-					this._Close = value;
-					this.SendPropertyChanged("Close");
-					this.OnCloseChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int NOT NULL")]
-		public int Volume
-		{
-			get
-			{
-				return this._Volume;
-			}
-			set
-			{
-				if ((this._Volume != value))
-				{
-					this.OnVolumeChanging(value);
-					this.SendPropertyChanging();
-					this._Volume = value;
-					this.SendPropertyChanged("Volume");
-					this.OnVolumeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
-		public System.DateTime Date
-		{
-			get
-			{
-				return this._Date;
-			}
-			set
-			{
-				if ((this._Date != value))
-				{
-					this.OnDateChanging(value);
-					this.SendPropertyChanging();
-					this._Date = value;
-					this.SendPropertyChanged("Date");
-					this.OnDateChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StockSimulationRun")]
 	public partial class StockSimulationRun : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1104,6 +881,236 @@ namespace StockDbWriter
 					this._LowStockPriceSinceBuyID = value;
 					this.SendPropertyChanged("LowStockPriceSinceBuyID");
 					this.OnLowStockPriceSinceBuyIDChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StockPrices")]
+	public partial class StockPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _StockID;
+		
+		private decimal _OpenPrice;
+		
+		private decimal _Low;
+		
+		private decimal _High;
+		
+		private decimal _ClosePrice;
+		
+		private int _Volume;
+		
+		private System.DateTime _Date;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnStockIDChanging(int value);
+    partial void OnStockIDChanged();
+    partial void OnOpenPriceChanging(decimal value);
+    partial void OnOpenPriceChanged();
+    partial void OnLowChanging(decimal value);
+    partial void OnLowChanged();
+    partial void OnHighChanging(decimal value);
+    partial void OnHighChanged();
+    partial void OnClosePriceChanging(decimal value);
+    partial void OnClosePriceChanged();
+    partial void OnVolumeChanging(int value);
+    partial void OnVolumeChanged();
+    partial void OnDateChanging(System.DateTime value);
+    partial void OnDateChanged();
+    #endregion
+		
+		public StockPrice()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockID", DbType="Int NOT NULL")]
+		public int StockID
+		{
+			get
+			{
+				return this._StockID;
+			}
+			set
+			{
+				if ((this._StockID != value))
+				{
+					this.OnStockIDChanging(value);
+					this.SendPropertyChanging();
+					this._StockID = value;
+					this.SendPropertyChanged("StockID");
+					this.OnStockIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OpenPrice", DbType="Decimal(18,2) NOT NULL")]
+		public decimal OpenPrice
+		{
+			get
+			{
+				return this._OpenPrice;
+			}
+			set
+			{
+				if ((this._OpenPrice != value))
+				{
+					this.OnOpenPriceChanging(value);
+					this.SendPropertyChanging();
+					this._OpenPrice = value;
+					this.SendPropertyChanged("OpenPrice");
+					this.OnOpenPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Low", DbType="Decimal(18,2) NOT NULL")]
+		public decimal Low
+		{
+			get
+			{
+				return this._Low;
+			}
+			set
+			{
+				if ((this._Low != value))
+				{
+					this.OnLowChanging(value);
+					this.SendPropertyChanging();
+					this._Low = value;
+					this.SendPropertyChanged("Low");
+					this.OnLowChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_High", DbType="Decimal(18,2) NOT NULL")]
+		public decimal High
+		{
+			get
+			{
+				return this._High;
+			}
+			set
+			{
+				if ((this._High != value))
+				{
+					this.OnHighChanging(value);
+					this.SendPropertyChanging();
+					this._High = value;
+					this.SendPropertyChanged("High");
+					this.OnHighChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClosePrice", DbType="Decimal(18,2) NOT NULL")]
+		public decimal ClosePrice
+		{
+			get
+			{
+				return this._ClosePrice;
+			}
+			set
+			{
+				if ((this._ClosePrice != value))
+				{
+					this.OnClosePriceChanging(value);
+					this.SendPropertyChanging();
+					this._ClosePrice = value;
+					this.SendPropertyChanged("ClosePrice");
+					this.OnClosePriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int NOT NULL")]
+		public int Volume
+		{
+			get
+			{
+				return this._Volume;
+			}
+			set
+			{
+				if ((this._Volume != value))
+				{
+					this.OnVolumeChanging(value);
+					this.SendPropertyChanging();
+					this._Volume = value;
+					this.SendPropertyChanged("Volume");
+					this.OnVolumeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this.OnDateChanging(value);
+					this.SendPropertyChanging();
+					this._Date = value;
+					this.SendPropertyChanged("Date");
+					this.OnDateChanged();
 				}
 			}
 		}

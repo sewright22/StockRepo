@@ -58,7 +58,7 @@ namespace StockTrendPredictor
                         }
                         else
                         {
-                            if (((price.Close - transaction.BuyStockPrice.Close) / transaction.BuyStockPrice.Close) > Convert.ToDecimal(0.1))
+                            if (((price.ClosePrice - transaction.BuyStockPrice.ClosePrice) / transaction.BuyStockPrice.ClosePrice) > Convert.ToDecimal(0.1))
                             {
                                 bought = false;
                                 //_repo.SellStock(stock.ID, price.Close, price.Date);
@@ -74,11 +74,11 @@ namespace StockTrendPredictor
                             }
                             else
                             {
-                                if(price.Close < transaction.LowSinceBuy.Close)
+                                if(price.ClosePrice < transaction.LowSinceBuy.ClosePrice)
                                 {
                                     transaction.LowSinceBuy = price;
                                 }
-                                else if(price.Close > transaction.HighSinceBuy.Close)
+                                else if(price.ClosePrice > transaction.HighSinceBuy.ClosePrice)
                                 {
                                     transaction.HighSinceBuy = price;
                                 }

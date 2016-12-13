@@ -54,7 +54,18 @@ namespace StockFrontEnd.Factory
 
         private static Stock BuildFromOtherLine(string line)
         {
-            throw new NotImplementedException();
+            var splitLine = line.Split('|');
+
+            return new Stock()
+            {
+                MarketID = 2,
+                Symbol = splitLine[0],
+                Name = splitLine[1],
+                Category = splitLine[2],
+                TestIssue = splitLine[6],
+                RoundLotSize = Convert.ToInt32(splitLine[5]),
+                ETF = splitLine[4]
+            };
         }
     }
 }

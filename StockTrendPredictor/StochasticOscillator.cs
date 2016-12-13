@@ -18,13 +18,17 @@ namespace StockTrendPredictor
         private StockPrice _periodLowVal;
         private StockPrice _periodHighVal;
         private decimal _percentK;
+        private int _lookBack;
 
-        public StochasticOscillator(int kNum, int dNum)
+        public StochasticOscillator(int kNum, int dNum) : this(kNum, dNum, 14) { }
+
+        public StochasticOscillator(int kNum, int dNum, int lookBack)
         {
             _lst_pricePoints = new List<StockPrice>();
             _lst_KVals = new List<KPercentPoint>();
             _kVal = kNum;
             _dVal = dNum;
+            _lookBack = lookBack;
         }
 
         public decimal DPercent
@@ -64,9 +68,9 @@ namespace StockTrendPredictor
         private void DetermineLow()
         {
             _periodLowVal = null;
-            if (_lst_pricePoints.Count >= 14)
+            if (_lst_pricePoints.Count >= _lookBack)
             {
-                for (int i = 0; i < 14; i++)
+                for (int i = 0; i < _lookBack; i++)
                 {
                     var currentPoint = _lst_pricePoints[i];
 
@@ -76,7 +80,7 @@ namespace StockTrendPredictor
                     }
                     else
                     {
-                        if (currentPoint.Close < _periodLowVal.Close)
+                        if (currentPoint.ClosePrice < _periodLowVal.ClosePrice)
                         {
                             _periodLowVal = currentPoint;
                         }
@@ -88,9 +92,9 @@ namespace StockTrendPredictor
         private void DetermineHigh()
         {
             _periodHighVal = null;
-            if (_lst_pricePoints.Count >= 14)
+            if (_lst_pricePoints.Count >= _lookBack)
             {
-                for (int i = 0; i < 14; i++)
+                for (int i = 0; i < _lookBack; i++)
                 {
                     var currentPoint = _lst_pricePoints[i];
 
@@ -100,7 +104,7 @@ namespace StockTrendPredictor
                     }
                     else
                     {
-                        if (currentPoint.Close > _periodHighVal.Close)
+                        if (currentPoint.ClosePrice > _periodHighVal.ClosePrice)
                         {
                             _periodHighVal = currentPoint;
                         }
@@ -159,9 +163,16 @@ namespace StockTrendPredictor
 
         public void CalculatePercentK()
         {
-            if (_lst_pricePoints.Count >= 14)
+            if (_lst_pricePoints.Count >= _lookBack)
             {
-                _percentK = ((_lst_pricePoints[0].Close - _periodLowVal.Close) / (_periodHighVal.Close - _periodLowVal.Close)) * 100;
+                try
+                {
+                    _percentK = ((_lst_pricePoints[0].ClosePrice - _periodLowVal.ClosePrice) / (_periodHighVal.ClosePrice - _periodLowVal.ClosePrice)) * 100;
+                }
+                catch(DivideByZeroException)
+                {
+                    _percentK = 0;
+                }
                 _lst_KVals.Insert(0, new KPercentPoint() { Date = DateTime.Now, Value = _percentK });
             }
             else

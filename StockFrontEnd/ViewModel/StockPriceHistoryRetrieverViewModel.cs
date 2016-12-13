@@ -53,16 +53,20 @@ namespace StockFrontEnd.ViewModel
             {
                 try
                 {
-                    var priceDownloader = new StockPriceDownloader(_dbAccess.GetMarket(stock.MarketID).Name, stock.Symbol, Properties.Resources.StockPriceBaseURL);
+                    var priceDownloader = new StockPriceDownloader(_dbAccess.GetMarket(stock.MarketID).Name, stock.Symbol, Properties.Resources.StockPriceBaseURL2);
                     priceDownloader.DownloadPrices();
 
                     while (priceDownloader.EOF == false)
                     {
                         var stockPrice = StockPriceFactory.Build(priceDownloader.GetNextLine(), stock.ID);
 
-                        if (_dbAccess.StockPriceExists(stockPrice) == false)
+                        //if (_dbAccess.StockPriceExists(stockPrice) == false)
+                        
+                         var retVal = _dbAccess.AddStockPrice(stock.Symbol, stockPrice.OpenPrice, stockPrice.Low, stockPrice.High, stockPrice.ClosePrice, stockPrice.Volume, stockPrice.Date);
+
+                        if (retVal >= 0)
                         {
-                            _dbAccess.AddStockPrice(stockPrice);
+                            var item = 0;
                         }
                         else
                         {
@@ -70,7 +74,25 @@ namespace StockFrontEnd.ViewModel
                         }
                     }
                 }
-                catch (Exception) { }
+                catch (Exception e)
+                {
+                    var m = e;
+                }
+            }
+        }
+
+        private void ImportStockSymbols()
+        {
+            var _dbAccess = new StockDbAccess();
+            var file = new FtpFileDownloader();
+
+            var lines = file.Download("ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt").Split(new string[] { Environment.NewLine, '\n'.ToString() }, StringSplitOptions.None);
+            lines = lines.Where(w => w != lines[0]).ToArray();
+            foreach (var line in lines)
+            {
+                var stockPrice = StockFactory.Build(line, Model.StockLineType.Other);
+
+                _dbAccess.AddStock(stockPrice);
             }
         }
 

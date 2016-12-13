@@ -27,7 +27,8 @@ namespace StockImport
         public void DownloadPrices()
         {
             var downloader = new HttpFileDownloader();
-            var priceFile = downloader.Download(string.Format(_url, _market, _symbol));
+            //var priceFile = downloader.Download(string.Format(_url, _market, _symbol));
+            var priceFile = downloader.Download(string.Format(_url, _symbol));
             _lines = priceFile.Split(new string[] { Environment.NewLine, '\n'.ToString() }, StringSplitOptions.None);
         }
 

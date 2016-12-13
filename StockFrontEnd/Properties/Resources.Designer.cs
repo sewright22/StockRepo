@@ -86,5 +86,14 @@ namespace StockFrontEnd.Properties {
                 return ResourceManager.GetString("StockPriceBaseURL", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://chart.finance.yahoo.com/table.csv?s={0}&amp;a=8&amp;b=9&amp;c=2015&amp;f=2016&amp;g=d&amp;ignore=.csv.
+        /// </summary>
+        internal static string StockPriceBaseURL2 {
+            get {
+                return ResourceManager.GetString("StockPriceBaseURL2", resourceCulture);
+            }
+        }
     }
 }

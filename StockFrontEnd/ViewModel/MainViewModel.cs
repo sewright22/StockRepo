@@ -16,16 +16,33 @@ namespace StockFrontEnd.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private int _selectedTab;
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
+            _selectedTab = 2;
             StockPriceHistoryRetriever = new StockPriceHistoryRetrieverViewModel();
             SimulationRunner = new SimulationRunnerViewModel();
+            Suggestions = new StockSuggestionViewModel();
+        }
+
+        public int SelectedTab
+        {
+            get
+            {
+                return _selectedTab;
+            }
+            set
+            {
+                Set(ref _selectedTab, value);
+            }
         }
 
         public StockPriceHistoryRetrieverViewModel StockPriceHistoryRetriever { get; set; }
         public SimulationRunnerViewModel SimulationRunner { get; set; }
+        public StockSuggestionViewModel Suggestions { get; set; }
     }
 }

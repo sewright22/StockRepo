@@ -8,12 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <view:StockPriceHistoryRetrieverView DataContext="{Binding StockPriceHistoryRetriever}"/>
-        <view:SimulationRunnerView Grid.Row="1" 
-                                   DataContext="{Binding SimulationRunner}"/>
+        <TabControl SelectedIndex="{Binding SelectedTab}" >
+            <TabItem Header="Imports">
+                <view:StockPriceHistoryRetrieverView DataContext="{Binding StockPriceHistoryRetriever}"/>
+            </TabItem>
+            <TabItem Header="Simulations" >
+                <view:SimulationRunnerView DataContext="{Binding SimulationRunner}"/>
+            </TabItem>
+            <TabItem Header="Suggestions">
+                <ContentControl  />
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>

@@ -26,11 +26,20 @@ namespace StockFrontEnd.ViewModel
 
         private void RunSimulationButtonClicked()
         {
-            var sim1 = new BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(50, 14);
-            var sim2 = new BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(14, 4);
-
-            sim1.Run();
-            sim2.Run();
+            //for(int i=10;i<=20;i++)
+            {
+                //for (int j = 45; j <= 55; j++)
+                {
+                    var sim1 = new BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(50,14,14);
+                    var sim2 = new BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(55, 18, 14);
+                    //var sim3 = new BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(55, 18, 21);
+                    //var sim2 = new BasicStochasticOscillatorPredictorAlgorithmUsingFlipCriteria(50, 15);
+                    sim1.Run();
+                    sim2.Run();
+                    //sim3.Run();
+                    //sim2.Run();
+                }
+            }
         }
 
         public string ButtonText

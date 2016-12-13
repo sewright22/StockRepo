@@ -150,20 +150,18 @@ namespace DbAccess
 
         public void AddStockPrice(StockPrice stockPrice)
         {
-            _stockDb.StockPrices.InsertOnSubmit(stockPrice);
-            _stockDb.SubmitChanges();
+            //_stockDb.InsertStockPrice(stockPrice);
         }
 
-        public void AddStockPrice(string stockName, decimal open, decimal low, decimal high, decimal close, int volume, DateTime date)
+        public int AddStockPrice(string stockName, decimal open, decimal low, decimal high, decimal close, int volume, DateTime date)
         {
-            AddStockPrice(GetStock(stockName).ID, open, low, high, close, volume, date);
+            return _stockDb.InsertStockPrice(stockName, open, low, high, close, volume, date);
         }
 
         public void AddStockPrice(int stockId, decimal open, decimal low, decimal high, decimal close, int volume, DateTime date)
         {
-            var stockPrice = new StockPrice() { StockID = stockId, Open = open, Low = low, High = high, Close = close, Volume = volume, Date = date };
-            _stockDb.StockPrices.InsertOnSubmit(stockPrice);
-            _stockDb.SubmitChanges();
+            //var stockPrice = new StockPrice() { StockID = stockId, OpenPrice = open, Low = low, High = high, ClosePrice = close, Volume = volume, Date = date };
+            //_stockDb.InsertStockPrice();
         }
 
         public void BuyStock(int stockID, decimal price, DateTime date)

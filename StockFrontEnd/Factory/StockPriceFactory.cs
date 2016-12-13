@@ -20,10 +20,10 @@ namespace StockFrontEnd.Factory
                 return new StockPrice()
                 {
                     Date = Convert.ToDateTime(splitLine[0]),
-                    Open = Convert.ToDecimal(splitLine[1]),
+                    OpenPrice = Convert.ToDecimal(splitLine[1]),
                     High = Convert.ToDecimal(splitLine[2]),
                     Low = Convert.ToDecimal(splitLine[3]),
-                    Close = Convert.ToDecimal(splitLine[4]),
+                    ClosePrice = Convert.ToDecimal(splitLine[4]),
                     Volume = Convert.ToInt32(splitLine[5]),
                     StockID = stockID
                 };

@@ -126,4 +126,7 @@
   <data name="StockPriceBaseURL" xml:space="preserve">
     <value>http://www.google.com/finance/historical?q={0}%3A{1}&amp;ei=v0rYV6mQEofDmAHd46uQCw&amp;output=csv&amp;ei=v0rYV6mQEofDmAHd46uQCw&amp;output=csv</value>
   </data>
+  <data name="StockPriceBaseURL2" xml:space="preserve">
+    <value>http://chart.finance.yahoo.com/table.csv?s={0}&amp;a=8&amp;b=9&amp;c=2015&amp;f=2016&amp;g=d&amp;ignore=.csv</value>
+  </data>
 </root>

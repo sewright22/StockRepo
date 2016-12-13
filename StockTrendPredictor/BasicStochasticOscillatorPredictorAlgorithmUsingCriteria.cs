@@ -11,27 +11,29 @@ namespace StockTrendPredictor
     {
         private int _dVal;
         private int _kVal;
+        private int _lookBack;
         private StockDbAccess _repo;
 
-        public BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(int kVal, int dVal)
+        public BasicStochasticOscillatorPredictorAlgorithmUsingCriteria(int kVal, int dVal, int lookBack)
         {
             _repo = new StockDbAccess();
             _kVal = kVal;
             _dVal = dVal;
+            _lookBack = lookBack;
         }
 
         public void Run()
         {
-            int runID5 = _repo.StartRun(string.Format("Stochastic Oscillator Flip - K={0} D={1} Lower Limit 5 Sell at 10% profit", _kVal, _dVal));
-            int runID10 = _repo.StartRun(string.Format("Stochastic Oscillator Flip - K={0} D={1} Lower Limit 10 Sell at 10% profit", _kVal, _dVal));
-            int runID15 = _repo.StartRun(string.Format("Stochastic Oscillator Flip - K={0} D={1} Lower Limit 15 Sell at 10% profit", _kVal, _dVal));
-            int runID20 = _repo.StartRun(string.Format("Stochastic Oscillator Flip - K={0} D={1} Lower Limit 20 Sell at 10% profit", _kVal, _dVal));
+            int runID5 = _repo.StartRun(string.Format("Stochastic Oscillator - K={0} D={1} Look Back={2} Lower Limit 5 Sell at 10% profit", _kVal, _dVal, _lookBack));
+            int runID10 = _repo.StartRun(string.Format("Stochastic Oscillator - K={0} D={1} Look Back={2} Lower Limit 10 Sell at 10% profit", _kVal, _dVal, _lookBack));
+            int runID15 = _repo.StartRun(string.Format("Stochastic Oscillator - K={0} D={1} Look Back={2} Lower Limit 15 Sell at 10% profit", _kVal, _dVal, _lookBack));
+            int runID20 = _repo.StartRun(string.Format("Stochastic Oscillator - K={0} D={1} Look Back={2} Lower Limit 20 Sell at 10% profit", _kVal, _dVal, _lookBack));
 
             var stockList = _repo.GetStocks();
 
             foreach(var stock in stockList)
             {
-                var stochasticOscillator = new StochasticOscillator(_kVal, _dVal);
+                var stochasticOscillator = new StochasticOscillator(_kVal, _dVal, _lookBack);
                 var priceHistory = _repo.GetStockPrices(stock.ID);
                 var transaction = new TradeTransaction();
                 IBuySellCriteria crit5 = new BasicThresholdBuySellCriteria(runID5, 5, stochasticOscillator);
@@ -55,6 +57,7 @@ namespace StockTrendPredictor
                 crit5.LogOpenTransaction();
                 crit10.LogOpenTransaction();
                 crit15.LogOpenTransaction();
+                crit20.LogOpenTransaction();
             }
         }
     }

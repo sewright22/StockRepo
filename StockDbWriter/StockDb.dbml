@@ -35,18 +35,6 @@
       <Column Name="ETF" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.StockPrices" Member="StockPrices">
-    <Type Name="StockPrice">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="[Open]" Member="Open" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="Low" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="High" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="[Close]" Member="Close" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="Volume" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.StockSimulationRun" Member="StockSimulationRuns">
     <Type Name="StockSimulationRun">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -62,6 +50,18 @@
       <Column Name="SellStockPriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="HighStockPriceSinceBuyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LowStockPriceSinceBuyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StockPrices" Member="StockPrices">
+    <Type Name="StockPrice">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Low" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="High" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Function Name="dbo.AddStockTransaction" Method="AddStockTransaction">
@@ -80,6 +80,16 @@
   <Function Name="dbo.SellStock" Method="SellStock">
     <Parameter Name="stockID" Type="System.Int32" DbType="Int" />
     <Parameter Name="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="date" Type="System.DateTime" DbType="DateTime" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertStockPrice" Method="InsertStockPrice">
+    <Parameter Name="stockSymbol" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="openPrice" Type="System.Decimal" DbType="Decimal(12,2)" />
+    <Parameter Name="lowPrice" Type="System.Decimal" DbType="Decimal(12,2)" />
+    <Parameter Name="highPrice" Type="System.Decimal" DbType="Decimal(12,2)" />
+    <Parameter Name="closePrice" Type="System.Decimal" DbType="Decimal(12,2)" />
+    <Parameter Name="volume" Type="System.Int32" DbType="Int" />
     <Parameter Name="date" Type="System.DateTime" DbType="DateTime" />
     <Return Type="System.Int32" />
   </Function>
